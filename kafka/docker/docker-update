@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+docker build . -f Dockerfile.alpine -t fwt/kafka
+docker save fwt/kafka -o kafka.tar
+scp kafka.tar root@k8s-node0:/root
+scp kafka.tar root@k8s-node1:/root
+scp kafka.tar root@k8s-node2:/root

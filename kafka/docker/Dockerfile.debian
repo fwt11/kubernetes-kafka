@@ -1,0 +1,16 @@
+FROM debian:buster
+RUN apt-get update && apt-get install -y apt-transport-https ca-certificates
+
+COPY sources.list /etc/apt/
+RUN apt-get update && \
+        apt-get install -y default-jre-headless && \
+        apt-get install -y wget
+RUN wget https://mirror.bit.edu.cn/apache/kafka/2.5.0/kafka_2.13-2.5.0.tgz && \
+        tar xvf kafka_2.13-2.5.0.tgz -C /opt && \
+        cd /opt && \
+        mv kafka_2.13-2.5.0 kafka
+
+COPY server.properties /opt/kafka
+COPY start-kafka /bin
+
+CMD start-kafka

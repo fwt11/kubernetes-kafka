@@ -1,0 +1,16 @@
+FROM alpine:3.11.6
+RUN echo -e "https://mirrors.ustc.edu.cn/alpine/v3.11/main/\nhttps://mirrors.ustc.edu.cn/alpine/v3.11/community/" > /etc/apk/repositories
+RUN apk update && apk add ca-certificates && \
+        apk add openjdk11-jre-headless && \
+        apk add bash && \
+        update-ca-certificates && \
+        apk --no-cache add openssl wget
+RUN wget https://mirror.bit.edu.cn/apache/kafka/2.5.0/kafka_2.13-2.5.0.tgz && \
+        tar xvf kafka_2.13-2.5.0.tgz -C /opt && \
+        cd /opt && \
+        mv kafka_2.13-2.5.0 kafka
+
+COPY server.properties /opt/kafka
+COPY start-kafka /bin
+
+CMD [start-kafka]
